@@ -157,26 +157,22 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
   }
 
   Widget makeBody(SoundRecordNotifier state) {
-    return Column(
-      children: [
-        GestureDetector(
-          onHorizontalDragUpdate: (scrollEnd) {
-            state.updateScrollValue(scrollEnd.globalPosition, context);
-          },
-          onHorizontalDragEnd: (x) {
-            if (state.buttonPressed && !state.isLocked) state.finishRecording();
-          },
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-            ),
-            child: recordVoice(state),
+    return GestureDetector(
+      onHorizontalDragUpdate: (scrollEnd) {
+        state.updateScrollValue(scrollEnd.globalPosition, context);
+      },
+      onHorizontalDragEnd: (x) {
+        if (state.buttonPressed && !state.isLocked) state.finishRecording();
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
           ),
-        )
-      ],
+        ),
+        child: recordVoice(state),
+      ),
     );
   }
 
