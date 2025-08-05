@@ -20,6 +20,7 @@ class SocialMediaRecorder extends StatefulWidget {
 
   /// function called when start recording
   final Function()? startRecording;
+  final Function()? tapFunction;
 
   /// function called when stop recording, return the recording time (even if time < 1)
   final Function(String time)? stopRecording;
@@ -93,6 +94,7 @@ class SocialMediaRecorder extends StatefulWidget {
     this.maxRecordTimeInSecond,
     this.storeSoundRecoringPath = "",
     required this.sendRequestFunction,
+    this.tapFunction,
     this.startRecording,
     this.recordIconColor,
     this.stopRecording,
@@ -197,6 +199,11 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
     }
 
     return GestureDetector(
+      onTap: () {
+        if (widget.tapFunction != null) {
+          widget.tapFunction!();
+        }
+      },
       onLongPressStart: (details) {
         state.setNewInitialDraggableHeight(details.globalPosition.dy);
         state.resetEdgePadding();
