@@ -107,12 +107,12 @@ class SoundRecordNotifier extends ChangeNotifier {
 
   finishRecording() {
     if (buttonPressed) {
-      // if (second > 0 || minute > 0) {
-      String path = mPath;
-      String _time = minute.toString() + ":" + second.toString();
-      sendRequestFunction(File.fromUri(Uri(path: path)), _time);
-      stopRecording!(_time);
-      // }
+      if (second > 1 || minute > 0) {
+        String path = mPath;
+        String _time = minute.toString() + ":" + second.toString();
+        sendRequestFunction(File.fromUri(Uri(path: path)), _time);
+        stopRecording!(_time);
+      }
     }
     resetEdgePadding();
   }
@@ -163,8 +163,7 @@ class SoundRecordNotifier extends ChangeNotifier {
   Future<String> getFilePath() async {
     String _sdPath = "";
     Directory tempDir = await getTemporaryDirectory();
-    _sdPath =
-        initialStorePathRecord.isEmpty ? tempDir.path : initialStorePathRecord;
+    _sdPath = initialStorePathRecord.isEmpty ? tempDir.path : initialStorePathRecord;
     var d = Directory(_sdPath);
     if (!d.existsSync()) {
       d.createSync(recursive: true);
@@ -174,8 +173,7 @@ class SoundRecordNotifier extends ChangeNotifier {
         "${_counter.toString()}${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}-${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
     // print("the current data is $convertedDateTime");
     _counter++;
-    String storagePath =
-        _sdPath + "/" + convertedDateTime + _getSoundExtention();
+    String storagePath = _sdPath + "/" + convertedDateTime + _getSoundExtention();
     mPath = storagePath;
     return storagePath;
   }
