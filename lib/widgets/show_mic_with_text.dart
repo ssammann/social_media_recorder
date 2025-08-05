@@ -16,6 +16,7 @@ class ShowMicWithText extends StatelessWidget {
   final Color? counterBackGroundColor;
   final double fullRecordPackageHeight;
   final double initRecordPackageWidth;
+  final Color? recordIconColor;
 
   // ignore: sort_constructors_first
   ShowMicWithText({
@@ -28,21 +29,20 @@ class ShowMicWithText extends StatelessWidget {
     required this.slideToCancelTextStyle,
     required this.slideToCancelText,
     required this.recordIcon,
+    required this.recordIconColor,
     required this.counterBackGroundColor,
   }) : super(key: key);
-  final colorizeColors = [
-    Colors.black,
-    Colors.grey.shade200,
-    Colors.black,
-  ];
+  final colorizeColors = [Colors.black, Colors.grey.shade200, Colors.black];
   final colorizeTextStyle = const TextStyle(
     fontSize: 14.0,
     fontFamily: 'Horizon',
   );
+
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: !soundRecorderState.buttonPressed
+      mainAxisAlignment:
+      !soundRecorderState.buttonPressed
           ? MainAxisAlignment.center
           : MainAxisAlignment.start,
       children: [
@@ -52,31 +52,38 @@ class ShowMicWithText extends StatelessWidget {
           children: [
             Transform.scale(
               key: soundRecorderState.key,
-              scale: soundRecorderState.buttonPressed ? 1.3 : 1,
+              scale: soundRecorderState.buttonPressed ? 1 : 0.8,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(600),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeIn,
-                  width: soundRecorderState.buttonPressed
+                  width:
+                  soundRecorderState.buttonPressed
                       ? fullRecordPackageHeight
                       : initRecordPackageWidth - 5,
                   height: fullRecordPackageHeight,
                   child: Container(
-                    color: (soundRecorderState.buttonPressed)
+                    color:
+                    (soundRecorderState.buttonPressed)
                         ? backGroundColor ??
-                            Theme.of(context).colorScheme.secondary
+                        Theme.of(context).colorScheme.secondary
                         : Colors.transparent,
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: recordIcon ??
-                          Icon(
-                            Icons.mic,
-                            size: 28,
-                            color: (soundRecorderState.buttonPressed)
-                                ? Colors.grey.shade200
-                                : Colors.black,
-                          ),
+                      child: Center(
+                        child:
+                        recordIcon ??
+                            Icon(
+                              Icons.mic,
+                              size: 28,
+                              color:
+                              recordIconColor ??
+                                  ((soundRecorderState.buttonPressed)
+                                      ? Colors.grey.shade200
+                                      : Colors.black),
+                            ),
+                      ),
                     ),
                   ),
                 ),
@@ -91,9 +98,7 @@ class ShowMicWithText extends StatelessWidget {
               child: DefaultTextStyle(
                 overflow: TextOverflow.clip,
                 maxLines: 1,
-                style: const TextStyle(
-                  fontSize: 14.0,
-                ),
+                style: const TextStyle(fontSize: 14.0),
                 child: AnimatedTextKit(
                   animatedTexts: [
                     ColorizeAnimatedText(

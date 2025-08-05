@@ -18,6 +18,7 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
   final Color? counterBackGroundColor;
   final Color? cancelTextBackGroundColor;
   final Widget? sendButtonIcon;
+
   // ignore: sort_constructors_first
   const SoundRecorderWhenLockedDesign({
     Key? key,
@@ -38,7 +39,7 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
         color: cancelTextBackGroundColor ?? Colors.grey.shade100,
         borderRadius: const BorderRadius.only(
@@ -59,7 +60,7 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
                 soundRecordNotifier.finishRecording();
               },
               child: Transform.scale(
-                scale: 1.2,
+                scale: 1,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(600),
                   child: AnimatedContainer(
@@ -70,14 +71,16 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
                     child: Container(
                       color: recordIconWhenLockBackGroundColor,
                       child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: recordIconWhenLockedRecord ??
+                        padding: const EdgeInsets.all(8.0),
+                        child:
+                        recordIconWhenLockedRecord ??
                             sendButtonIcon ??
                             Icon(
                               Icons.send,
                               textDirection: TextDirection.ltr,
-                              size: 28,
-                              color: (soundRecordNotifier.buttonPressed)
+                              size: 25,
+                              color:
+                              (soundRecordNotifier.buttonPressed)
                                   ? Colors.grey.shade200
                                   : Colors.black,
                             ),
@@ -89,27 +92,27 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
             ),
             Expanded(
               child: InkWell(
-                  onTap: () {
-                    soundRecordNotifier.isShow = false;
-                    String _time = soundRecordNotifier.minute.toString() +
-                        ":" +
-                        soundRecordNotifier.second.toString();
-                    if (stopRecording != null) stopRecording!(_time);
-                    soundRecordNotifier.resetEdgePadding();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      cancelText ?? "",
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.clip,
-                      style: cancelTextStyle ??
-                          const TextStyle(
-                            color: Colors.black,
-                          ),
-                    ),
-                  )),
+                onTap: () {
+                  soundRecordNotifier.isShow = false;
+                  String _time =
+                      soundRecordNotifier.minute.toString() +
+                          ":" +
+                          soundRecordNotifier.second.toString();
+                  if (stopRecording != null) stopRecording!(_time);
+                  soundRecordNotifier.resetEdgePadding();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    cancelText ?? "",
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.clip,
+                    style:
+                    cancelTextStyle ?? const TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
             ),
             ShowCounter(
               soundRecorderState: soundRecordNotifier,
