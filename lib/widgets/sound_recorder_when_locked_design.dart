@@ -7,6 +7,7 @@ import 'package:social_media_recorder/widgets/show_counter.dart';
 // ignore: must_be_immutable
 class SoundRecorderWhenLockedDesign extends StatelessWidget {
   final double fullRecordPackageHeight;
+  final double? maxRecordPackageWidth;
   final SoundRecordNotifier soundRecordNotifier;
   final String? cancelText;
   final Function sendRequestFunction;
@@ -28,6 +29,7 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
     required this.cancelText,
     required this.sendRequestFunction,
     this.stopRecording,
+    this.maxRecordPackageWidth,
     required this.recordIconWhenLockedRecord,
     required this.cancelTextStyle,
     required this.counterTextStyle,
@@ -39,7 +41,7 @@ class SoundRecorderWhenLockedDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: maxRecordPackageWidth ?? MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
         color: cancelTextBackGroundColor ?? Colors.grey.shade100,
         borderRadius: const BorderRadius.only(

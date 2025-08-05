@@ -83,12 +83,14 @@ class SocialMediaRecorder extends StatefulWidget {
   final double fullRecordPackageHeight;
 
   final double initRecordPackageWidth;
+  final double? maxRecordPackageWidth;
 
   // ignore: sort_constructors_first
   const SocialMediaRecorder({
     this.sendButtonIcon,
     this.initRecordPackageWidth = 40,
     this.fullRecordPackageHeight = 50,
+    this.maxRecordPackageWidth,
     this.maxRecordTimeInSecond,
     this.storeSoundRecoringPath = "",
     required this.sendRequestFunction,
@@ -178,6 +180,7 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
     if (state.lockScreenRecord == true) {
       return SoundRecorderWhenLockedDesign(
         cancelText: widget.cancelText,
+        maxRecordPackageWidth: widget.maxRecordPackageWidth,
         fullRecordPackageHeight: widget.fullRecordPackageHeight,
         // cancelRecordFunction: widget.cacnelRecording ?? () {},
         sendButtonIcon: widget.sendButtonIcon,
@@ -212,7 +215,8 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
         height: widget.fullRecordPackageHeight,
         width:
         (soundRecordNotifier.isShow)
-            ? MediaQuery.of(context).size.width * 0.9
+            ? widget.maxRecordPackageWidth ??
+            MediaQuery.of(context).size.width * 0.9
             : widget.initRecordPackageWidth,
         child: Stack(
           children: [
