@@ -310,6 +310,7 @@ class SoundRecordNotifier extends ChangeNotifier {
     startRecord = false;
     final status = await Permission.microphone.status;
     if (status.isGranted) {
+      _isAcceptedPermission = true;
       final result = await Permission.storage.request();
       if (result.isGranted) {
         _isAcceptedPermission = true;
