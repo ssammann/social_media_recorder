@@ -163,7 +163,8 @@ class SoundRecordNotifier extends ChangeNotifier {
   Future<String> getFilePath() async {
     String _sdPath = "";
     Directory tempDir = await getTemporaryDirectory();
-    _sdPath = initialStorePathRecord.isEmpty ? tempDir.path : initialStorePathRecord;
+    _sdPath =
+        initialStorePathRecord.isEmpty ? tempDir.path : initialStorePathRecord;
     var d = Directory(_sdPath);
     if (!d.existsSync()) {
       d.createSync(recursive: true);
@@ -173,7 +174,8 @@ class SoundRecordNotifier extends ChangeNotifier {
         "${_counter.toString()}${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}-${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
     // print("the current data is $convertedDateTime");
     _counter++;
-    String storagePath = _sdPath + "/" + convertedDateTime + _getSoundExtention();
+    String storagePath =
+        _sdPath + "/" + convertedDateTime + _getSoundExtention();
     mPath = storagePath;
     return storagePath;
   }
@@ -270,12 +272,15 @@ class SoundRecordNotifier extends ChangeNotifier {
 
   /// this function to start record voice
   record(Function()? startRecord) async {
+    debugPrint("record");
     if (!_isAcceptedPermission) {
+      debugPrint("record permission");
       await Permission.microphone.request();
       await Permission.manageExternalStorage.request();
       await Permission.storage.request();
       _isAcceptedPermission = true;
     } else {
+      debugPrint("record started");
       buttonPressed = true;
       String recordFilePath = await getFilePath();
       if (_timer != null) {
@@ -284,11 +289,14 @@ class SoundRecordNotifier extends ChangeNotifier {
       _timer = Timer(const Duration(milliseconds: 400), () {
         recordMp3.start(const RecordConfig(), path: recordFilePath);
       });
-
+      debugPrint("record before function");
       if (startRecord != null) {
-        startRecord();
-      }
+        debugPrint("record in befor function");
 
+        startRecord();
+        debugPrint("record in after function");
+      }
+      debugPrint("record after function");
       _mapCounterGenerater();
       notifyListeners();
     }
