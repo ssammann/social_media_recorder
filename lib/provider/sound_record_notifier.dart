@@ -292,7 +292,7 @@ class SoundRecordNotifier extends ChangeNotifier {
       _mapCounterGenerater();
       notifyListeners();
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// to check permission
