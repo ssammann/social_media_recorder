@@ -192,12 +192,13 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
         cancelText: widget.cancelText,
         maxRecordPackageWidth: widget.maxRecordPackageWidth,
         fullRecordPackageHeight: widget.fullRecordPackageHeight,
+        // cancelRecordFunction: widget.cacnelRecording ?? () {},
         sendButtonIcon: widget.sendButtonIcon,
         cancelTextBackGroundColor: widget.cancelTextBackGroundColor,
         cancelTextStyle: widget.cancelTextStyle,
         counterBackGroundColor: widget.counterBackGroundColor,
         recordIconWhenLockBackGroundColor:
-            widget.recordIconWhenLockBackGroundColor ?? Colors.blue,
+        widget.recordIconWhenLockBackGroundColor ?? Colors.blue,
         counterTextStyle: widget.counterTextStyle,
         recordIconWhenLockedRecord: widget.recordIconWhenLockedRecord,
         sendRequestFunction: widget.sendRequestFunction,
@@ -207,12 +208,21 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
     }
 
     return Listener(
+      // onPointerDown: (details) async {
+      //   state.setNewInitialDraggableHeight(details.position.dy);
+      //   state.resetEdgePadding();
+      //
+      //   soundRecordNotifier.isShow = true;
+      //   state.record(widget.startRecording);
+      // },
+      // onPointerUp: (details) async {
+      //   if (!state.isLocked) {
+      //     state.finishRecording();
+      //   }
+      // },
       onPointerDown: (details) {
-        // Cancel previous timer if any
-        holdTimer?.cancel();
-
-        // Start a short timer to detect long press
-        holdTimer = Timer(const Duration(milliseconds: 200), () {
+        // Start timer for long press detection
+        holdTimer = Timer(Duration(milliseconds: 200), () {
           isHolding = true;
           state.setNewInitialDraggableHeight(details.position.dy);
           state.resetEdgePadding();
@@ -221,25 +231,23 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
           state.record(widget.startRecording);
         });
       },
-      onPointerMove: (details) {
-        // Optional: handle edge padding or drag cancel updates here
-        if (isHolding) {
-          state.updateScrollValue(details.position, context);
-        }
-      },
       onPointerUp: (details) {
+        // If long press was triggered, finish recording
         if (isHolding && !state.isLocked) {
           state.finishRecording();
-        } else if (!isHolding && !state.isLocked) {
-          widget.tapFunction?.call();
+        }
+        if (!isHolding && !state.isLocked) {
+          widget.tapFunction!.call();
         }
         _resetHold();
       },
-      onPointerCancel: (details) {
+      onPointerCancel: (val) {
+        // If user moves finger away
         if (isHolding && !state.isLocked) {
           state.finishRecording();
-        } else if (!isHolding && !state.isLocked) {
-          widget.tapFunction?.call();
+        }
+        if (!isHolding && !state.isLocked) {
+          widget.tapFunction!.call();
         }
         _resetHold();
       },
@@ -248,7 +256,7 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
         height: widget.fullRecordPackageHeight,
         width: (soundRecordNotifier.isShow)
             ? widget.maxRecordPackageWidth ??
-                MediaQuery.of(context).size.width * 0.9
+            MediaQuery.of(context).size.width * 0.9
             : widget.initRecordPackageWidth,
         child: Stack(
           children: [
@@ -260,8 +268,8 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
                     borderRadius: soundRecordNotifier.isShow
                         ? BorderRadius.circular(12)
                         : widget.radius != null && !soundRecordNotifier.isShow
-                            ? widget.radius
-                            : BorderRadius.circular(0),
+                        ? widget.radius
+                        : BorderRadius.circular(0),
                     color: widget.backGroundColor ?? Colors.grey.shade100,
                   ),
                   child: Stack(
@@ -272,7 +280,7 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
                           counterBackGroundColor: widget.counterBackGroundColor,
                           backGroundColor: widget.recordIconBackGroundColor,
                           fullRecordPackageHeight:
-                              widget.fullRecordPackageHeight,
+                          widget.fullRecordPackageHeight,
                           recordIcon: widget.recordIcon,
                           recordIconColor: widget.recordIconColor,
                           shouldShowText: soundRecordNotifier.isShow,
@@ -285,11 +293,11 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
                         Center(
                           child: ShowCounter(
                             counterBackGroundColor:
-                                widget.counterBackGroundColor,
+                            widget.counterBackGroundColor,
                             soundRecorderState: state,
                             counterTextStyle: widget.counterTextStyle,
                             fullRecordPackageHeight:
-                                widget.fullRecordPackageHeight,
+                            widget.fullRecordPackageHeight,
                           ),
                         ),
                     ],
@@ -311,4 +319,5 @@ class _SocialMediaRecorder extends State<SocialMediaRecorder> {
       ),
     );
   }
+
 }
